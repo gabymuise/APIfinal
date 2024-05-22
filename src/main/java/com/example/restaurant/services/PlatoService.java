@@ -3,8 +3,7 @@ package com.example.restaurant.services;
 import com.example.restaurant.dtos.requests.PlatoRequest;
 import com.example.restaurant.dtos.responses.PlatoResponse;
 import com.example.restaurant.mappers.PlatoMapper;
-import com.example.restaurant.models.EmpleadoModel;
-import com.example.restaurant.models.PlatoModel;
+import com.example.restaurant.models.Plato;
 import com.example.restaurant.repositories.PlatoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.rest.webmvc.ResourceNotFoundException;
@@ -17,23 +16,25 @@ import java.util.stream.Collectors;
 @Service
 public class PlatoService {
 
-    @Autowired
-    private PlatoRepository platoRepository;
+    private final PlatoRepository platoRepository;
+    private final PlatoMapper platoMapper;
 
     @Autowired
-    private PlatoMapper platoMapper;
+    public PlatoService(PlatoRepository platoRepository, PlatoMapper platoMapper) {
+        this.platoRepository = platoRepository;
+        this.platoMapper = platoMapper;
+    }
 
     @Transactional
-    public PlatoResponse crearPlato(PlatoRequest platoRequest, EmpleadoModel chef) {
-        PlatoModel plato = platoMapper.mapToPlatoModel(platoRequest);
-        plato.setIdChef(chef.getId()); // Asignar el ID del chef al plato
-        PlatoModel platoGuardado = platoRepository.save(plato);
+    public PlatoResponse crearPlato(PlatoRequest platoRequest) {
+        Plato plato = platoMapper.mapToPlatoModel(platoRequest);
+        Plato platoGuardado = platoRepository.save(plato);
         return platoMapper.mapToPlatoResponse(platoGuardado);
     }
 
     @Transactional(readOnly = true)
     public List<PlatoResponse> listarPlatos() {
-        List<PlatoModel> platos = platoRepository.findAll();
+        List<Plato> platos = platoRepository.findAll();
         return platos.stream()
                 .map(platoMapper::mapToPlatoResponse)
                 .collect(Collectors.toList());
@@ -41,13 +42,27 @@ public class PlatoService {
 
     @Transactional
     public void eliminarPlato(Long id) {
+        if (!platoRepository.existsById(id)) {
+            throw new ResourceNotFoundException("Plato no encontrado con id: " + id);
+        }
         platoRepository.deleteById(id);
     }
 
+    @Transactional(readOnly = true)
     public PlatoResponse obtenerPlatoPorId(Long id) {
-        PlatoModel plato = platoRepository.findById(id)
+        Plato plato = platoRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Plato no encontrado con id: " + id));
         return platoMapper.mapToPlatoResponse(plato);
     }
+
+    @Transactional
+    public PlatoResponse actualizarPlato(Long id, PlatoRequest platoRequest) {
+        Plato plato = platoRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Plato no encontrado con id: " + id));
+        platoMapper.updatePlatoFromRequest(platoRequest, plato);
+        Plato platoActualizado = platoRepository.save(plato);
+        return platoMapper.mapToPlatoResponse(platoActualizado);
+    }
 }
+
 

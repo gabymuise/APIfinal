@@ -6,21 +6,25 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Entity
-@Table(name = "empleados")
 @Getter
 @Setter
+@Table(name = "plato")
 @Component
-public class EmpleadoModel {
+public class Plato {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private Long id;
 
     @Column(name = "nombre")
     private String nombre;
 
-    @Column(name = "cargo")
-    private String cargo;
+    @Column(name = "descripcion")
+    private String descripcion;
+
+    @Column(name = "precio")
+    private Double precio;
 
 
 }

@@ -2,33 +2,33 @@ package com.example.restaurant.mappers;
 
 import com.example.restaurant.dtos.requests.PlatoRequest;
 import com.example.restaurant.dtos.responses.PlatoResponse;
-import com.example.restaurant.models.PlatoModel;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.example.restaurant.models.Plato;
 import org.springframework.stereotype.Service;
 
 @Service
 public class PlatoMapper {
-    @Autowired
-    private EmpleadoMapper empleadoMapper;
 
-    public PlatoModel mapToPlatoModel(PlatoRequest platoRequest) {
-        PlatoModel plato = new PlatoModel();
+    public Plato mapToPlatoModel(PlatoRequest platoRequest) {
+        Plato plato = new Plato();
         plato.setNombre(platoRequest.getNombre());
         plato.setDescripcion(platoRequest.getDescripcion());
         plato.setPrecio(platoRequest.getPrecio());
-        plato.setIdChef(platoRequest.getIdChef());
-        // Puedes mapear más campos según las necesidades de tu aplicación
         return plato;
     }
 
-    public PlatoResponse mapToPlatoResponse(PlatoModel platoModel) {
+    public PlatoResponse mapToPlatoResponse(Plato plato) {
         PlatoResponse platoResponse = new PlatoResponse();
-        platoResponse.setId(platoModel.getId());
-        platoResponse.setNombre(platoModel.getNombre());
-        platoResponse.setDescripcion(platoModel.getDescripcion());
-        platoResponse.setPrecio(platoModel.getPrecio());
-        platoResponse.setIdChef(platoModel.getIdChef());
-        // Puedes mapear más campos según las necesidades de tu aplicación
+        platoResponse.setId(plato.getId());
+        platoResponse.setNombre(plato.getNombre());
+        platoResponse.setDescripcion(plato.getDescripcion());
+        platoResponse.setPrecio(plato.getPrecio());
         return platoResponse;
     }
+
+    public void updatePlatoFromRequest(PlatoRequest platoRequest, Plato plato) {
+        plato.setNombre(platoRequest.getNombre());
+        plato.setDescripcion(platoRequest.getDescripcion());
+        plato.setPrecio(platoRequest.getPrecio());
+    }
 }
+

@@ -5,10 +5,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class PlatoRequest {
+public class ClienteRequest {
     private String nombre;
-    private String descripcion;
-    private Double precio;
-
-
+    private String email;
 }

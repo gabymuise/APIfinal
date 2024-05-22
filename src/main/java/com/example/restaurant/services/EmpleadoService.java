@@ -3,10 +3,9 @@ package com.example.restaurant.services;
 import com.example.restaurant.dtos.requests.EmpleadoRequest;
 import com.example.restaurant.dtos.responses.EmpleadoResponse;
 import com.example.restaurant.mappers.EmpleadoMapper;
-import com.example.restaurant.models.EmpleadoModel;
+import com.example.restaurant.models.Empleado;
 import com.example.restaurant.repositories.EmpleadoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -16,43 +15,49 @@ import java.util.stream.Collectors;
 @Service
 public class EmpleadoService {
 
-    @Autowired
-    private EmpleadoRepository empleadoRepository;
+    private final EmpleadoRepository empleadoRepository;
+    private final EmpleadoMapper empleadoMapper;
 
     @Autowired
-    private EmpleadoMapper empleadoMapper;
+    public EmpleadoService(EmpleadoRepository empleadoRepository, EmpleadoMapper empleadoMapper) {
+        this.empleadoRepository = empleadoRepository;
+        this.empleadoMapper = empleadoMapper;
+    }
 
-    public ResponseEntity<EmpleadoResponse> crearEmpleado(EmpleadoRequest empleadoRequest) {
-        EmpleadoModel empleado = empleadoMapper.mapToEmpleadoModel(empleadoRequest);
-        EmpleadoModel nuevoEmpleado = empleadoRepository.save(empleado);
-        EmpleadoResponse empleadoResponse = empleadoMapper.mapToEmpleadoResponse(nuevoEmpleado);
-        return ResponseEntity.ok(empleadoResponse);
+    public EmpleadoResponse crearEmpleado(EmpleadoRequest empleadoRequest) {
+        Empleado empleado = empleadoMapper.mapToEmpleadoModel(empleadoRequest);
+        Empleado nuevoEmpleado = empleadoRepository.save(empleado);
+        return empleadoMapper.mapToEmpleadoResponse(nuevoEmpleado);
     }
 
     public List<EmpleadoResponse> listarEmpleados() {
-        List<EmpleadoModel> empleados = empleadoRepository.findAll();
+        List<Empleado> empleados = empleadoRepository.findAll();
         return empleados.stream()
                 .map(empleadoMapper::mapToEmpleadoResponse)
                 .collect(Collectors.toList());
     }
 
-    public ResponseEntity<String> eliminarEmpleado(Long id) {
-        Optional<EmpleadoModel> empleadoOptional = empleadoRepository.findById(id);
-        if (empleadoOptional.isPresent()) {
+    public void eliminarEmpleado(Long id) {
+        if (empleadoRepository.existsById(id)) {
             empleadoRepository.deleteById(id);
-            return ResponseEntity.ok("Empleado eliminado correctamente");
-        } else {
-            return ResponseEntity.notFound().build();
-        }
-    }
-
-    public EmpleadoModel obtenerEmpleadoPorId(Long idEmpleado) {
-        Optional<EmpleadoModel> empleadoOptional = empleadoRepository.findById(idEmpleado);
-        if (empleadoOptional.isPresent()) {
-            return empleadoOptional.get();
         } else {
             throw new IllegalArgumentException("El empleado con el ID proporcionado no existe");
         }
     }
+
+    public EmpleadoResponse obtenerEmpleadoPorId(Long idEmpleado) {
+        Empleado empleado = empleadoRepository.findById(idEmpleado)
+                .orElseThrow(() -> new IllegalArgumentException("El empleado con el ID proporcionado no existe"));
+        return empleadoMapper.mapToEmpleadoResponse(empleado);
+    }
+
+    public EmpleadoResponse actualizarEmpleado(Long id, EmpleadoRequest empleadoRequest) {
+        Empleado empleado = empleadoRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("El empleado con el ID proporcionado no existe"));
+        empleadoMapper.updateEmpleadoFromRequest(empleadoRequest, empleado);
+        empleado = empleadoRepository.save(empleado);
+        return empleadoMapper.mapToEmpleadoResponse(empleado);
+    }
 }
+
 

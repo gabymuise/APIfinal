@@ -1,5 +1,7 @@
 package com.example.restaurant.dtos.requests;
 
+import com.example.restaurant.models.Cliente;
+import com.example.restaurant.models.Plato;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -8,6 +10,8 @@ import lombok.Setter;
 public class EmpleadoRequest {
     private String nombre;
     private String cargo;
-    // Puedes agregar más campos según las necesidades de tu aplicación
+    private Cliente cliente;
+    private Plato plato;
+
 }
 

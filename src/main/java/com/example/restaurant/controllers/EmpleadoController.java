@@ -16,7 +16,6 @@ import java.util.List;
 @RequestMapping("/empleados")
 public class EmpleadoController {
 
-    @Autowired
     private final EmpleadoService empleadoService;
 
     @Autowired
@@ -26,7 +25,7 @@ public class EmpleadoController {
 
     @PostMapping("/crear")
     public ResponseEntity<EmpleadoResponse> crearEmpleado(@RequestBody EmpleadoRequest empleadoRequest) {
-        EmpleadoResponse nuevoEmpleado = empleadoService.crearEmpleado(empleadoRequest).getBody();
+        EmpleadoResponse nuevoEmpleado = empleadoService.crearEmpleado(empleadoRequest);
         return ResponseEntity.status(HttpStatus.CREATED).body(nuevoEmpleado);
     }
 
@@ -39,7 +38,21 @@ public class EmpleadoController {
     @DeleteMapping("/borrar/{id}")
     public ResponseEntity<String> borrarEmpleado(@PathVariable("id") Long id) {
         empleadoService.eliminarEmpleado(id);
-        return ResponseEntity.ok("Empleado eliminado");
+        return ResponseEntity.ok("Empleado eliminado correctamente");
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<EmpleadoResponse> obtenerEmpleadoPorId(@PathVariable Long id) {
+        EmpleadoResponse empleado = empleadoService.obtenerEmpleadoPorId(id);
+        return ResponseEntity.ok(empleado);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<EmpleadoResponse> actualizarEmpleado(@PathVariable Long id, @RequestBody EmpleadoRequest empleadoRequest) {
+        EmpleadoResponse empleadoActualizado = empleadoService.actualizarEmpleado(id, empleadoRequest);
+        return ResponseEntity.ok(empleadoActualizado);
     }
 }
+
+
 

@@ -5,11 +5,8 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class PlatoResponse {
+public class ClienteResponse {
     private Long id;
     private String nombre;
-    private String descripcion;
-    private Double precio;
-
+    private String email;
 }
-

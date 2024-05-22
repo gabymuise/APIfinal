@@ -1,5 +1,7 @@
 package com.example.restaurant.dtos.responses;
 
+import com.example.restaurant.models.Cliente;
+import com.example.restaurant.models.Plato;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -9,6 +11,7 @@ public class EmpleadoResponse {
     private Long id;
     private String nombre;
     private String cargo;
-    // Puedes agregar más campos según las necesidades de tu aplicación
+    private Cliente cliente;
+    private Plato plato;
 }
 
