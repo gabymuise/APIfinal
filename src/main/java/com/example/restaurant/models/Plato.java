@@ -14,18 +14,25 @@ public class Plato {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
     private Long id;
 
-    @Column(name = "nombre")
     private String nombre;
-
-    @Column(name = "descripcion")
     private String descripcion;
-
-    @Column(name = "precio")
     private Double precio;
 
+    @ManyToOne
+    @JoinColumn(name = "categoria_id")
+    private Categoria categoria;
+
+    // Getters and Setters
+    // ...
+    public Categoria getCategoria() {
+        return categoria;
+    }
+
+    public void setCategoria(Categoria categoria) {
+        this.categoria = categoria;
+    }
 
 }
 
