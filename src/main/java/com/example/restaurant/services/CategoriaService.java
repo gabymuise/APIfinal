@@ -27,16 +27,16 @@ public class CategoriaService {
 
     @Transactional
     public CategoriaResponse crearCategoria(CategoriaRequest categoriaRequest) {
-        Categoria categoria = categoriaMapper.mapToCategoriaModel(categoriaRequest);
+        Categoria categoria = categoriaMapper.toCategoriaModel(categoriaRequest);
         Categoria nuevaCategoria = categoriaRepository.save(categoria);
-        return categoriaMapper.mapToCategoriaResponse(nuevaCategoria);
+        return categoriaMapper.toCategoriaResponse(nuevaCategoria);
     }
 
     @Transactional(readOnly = true)
     public List<CategoriaResponse> listarCategorias() {
         List<Categoria> categorias = categoriaRepository.findAll();
         return categorias.stream()
-                .map(categoriaMapper::mapToCategoriaResponse)
+                .map(categoriaMapper::toCategoriaResponse)
                 .collect(Collectors.toList());
     }
 
@@ -52,7 +52,7 @@ public class CategoriaService {
     public CategoriaResponse obtenerCategoriaPorId(Long id) {
         Categoria categoria = categoriaRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Categoría no encontrada con id: " + id));
-        return categoriaMapper.mapToCategoriaResponse(categoria);
+        return categoriaMapper.toCategoriaResponse(categoria);
     }
 
     @Transactional
@@ -61,6 +61,6 @@ public class CategoriaService {
                 .orElseThrow(() -> new EntityNotFoundException("Categoría no encontrada con id: " + id));
         categoria.setNombre(categoriaRequest.getNombre());
         Categoria categoriaActualizada = categoriaRepository.save(categoria);
-        return categoriaMapper.mapToCategoriaResponse(categoriaActualizada);
+        return categoriaMapper.toCategoriaResponse(categoriaActualizada);
     }
 }

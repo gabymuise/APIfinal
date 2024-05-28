@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class ClienteMapper {
 
-    public Cliente toCliente(ClienteRequest clienteRequest) {
+    public Cliente toClienteModel(ClienteRequest clienteRequest) {
         Cliente cliente = new Cliente();
         cliente.setNombre(clienteRequest.getNombre());
         cliente.setEmail(clienteRequest.getEmail());
@@ -28,4 +28,3 @@ public class ClienteMapper {
         cliente.setEmail(clienteRequest.getEmail());
     }
 }
-

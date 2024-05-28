@@ -30,16 +30,16 @@ public class PlatoService {
 
     @Transactional
     public PlatoResponse crearPlato(PlatoRequest platoRequest) {
-        Plato plato = platoMapper.mapToPlatoModel(platoRequest);
+        Plato plato = platoMapper.toPlatoModel(platoRequest);
         Plato nuevoPlato = platoRepository.save(plato);
-        return platoMapper.mapToPlatoResponse(nuevoPlato);
+        return platoMapper.toPlatoResponse(nuevoPlato);
     }
 
     @Transactional(readOnly = true)
     public List<PlatoResponse> listarPlatos() {
         List<Plato> platos = platoRepository.findAll();
         return platos.stream()
-                .map(platoMapper::mapToPlatoResponse)
+                .map(platoMapper::toPlatoResponse)
                 .collect(Collectors.toList());
     }
 
@@ -55,7 +55,7 @@ public class PlatoService {
     public PlatoResponse obtenerPlatoPorId(Long id) {
         Plato plato = platoRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Plato no encontrado con id: " + id));
-        return platoMapper.mapToPlatoResponse(plato);
+        return platoMapper.toPlatoResponse(plato);
     }
 
     @Transactional
@@ -68,6 +68,6 @@ public class PlatoService {
         plato.setCategoria(categoriaRepository.findById(platoRequest.getCategoriaId())
                 .orElseThrow(() -> new ResourceNotFoundException("Categoría no encontrada con id: " + platoRequest.getCategoriaId())));
         Plato platoActualizado = platoRepository.save(plato);
-        return platoMapper.mapToPlatoResponse(platoActualizado);
+        return platoMapper.toPlatoResponse(platoActualizado);
     }
 }

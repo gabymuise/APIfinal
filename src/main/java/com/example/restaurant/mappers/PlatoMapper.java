@@ -14,7 +14,7 @@ public class PlatoMapper {
     @Autowired
     private CategoriaRepository categoriaRepository;
 
-    public Plato mapToPlatoModel(PlatoRequest platoRequest) {
+    public Plato toPlatoModel(PlatoRequest platoRequest) {
         Plato plato = new Plato();
         plato.setNombre(platoRequest.getNombre());
         plato.setDescripcion(platoRequest.getDescripcion());
@@ -24,7 +24,7 @@ public class PlatoMapper {
         return plato;
     }
 
-    public PlatoResponse mapToPlatoResponse(Plato plato) {
+    public PlatoResponse toPlatoResponse(Plato plato) {
         PlatoResponse platoResponse = new PlatoResponse();
         platoResponse.setId(plato.getId());
         platoResponse.setNombre(plato.getNombre());

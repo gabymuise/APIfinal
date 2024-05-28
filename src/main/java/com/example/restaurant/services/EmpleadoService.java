@@ -25,15 +25,15 @@ public class EmpleadoService {
     }
 
     public EmpleadoResponse crearEmpleado(EmpleadoRequest empleadoRequest) {
-        Empleado empleado = empleadoMapper.mapToEmpleadoModel(empleadoRequest);
+        Empleado empleado = empleadoMapper.toEmpleadoModel(empleadoRequest);
         Empleado nuevoEmpleado = empleadoRepository.save(empleado);
-        return empleadoMapper.mapToEmpleadoResponse(nuevoEmpleado);
+        return empleadoMapper.toEmpleadoResponse(nuevoEmpleado);
     }
 
     public List<EmpleadoResponse> listarEmpleados() {
         List<Empleado> empleados = empleadoRepository.findAll();
         return empleados.stream()
-                .map(empleadoMapper::mapToEmpleadoResponse)
+                .map(empleadoMapper::toEmpleadoResponse)
                 .collect(Collectors.toList());
     }
 
@@ -48,7 +48,7 @@ public class EmpleadoService {
     public EmpleadoResponse obtenerEmpleadoPorId(Long idEmpleado) {
         Empleado empleado = empleadoRepository.findById(idEmpleado)
                 .orElseThrow(() -> new IllegalArgumentException("El empleado con el ID proporcionado no existe"));
-        return empleadoMapper.mapToEmpleadoResponse(empleado);
+        return empleadoMapper.toEmpleadoResponse(empleado);
     }
 
     public EmpleadoResponse actualizarEmpleado(Long id, EmpleadoRequest empleadoRequest) {
@@ -56,7 +56,7 @@ public class EmpleadoService {
                 .orElseThrow(() -> new IllegalArgumentException("El empleado con el ID proporcionado no existe"));
         empleadoMapper.updateEmpleadoFromRequest(empleadoRequest, empleado);
         empleado = empleadoRepository.save(empleado);
-        return empleadoMapper.mapToEmpleadoResponse(empleado);
+        return empleadoMapper.toEmpleadoResponse(empleado);
     }
 }
 

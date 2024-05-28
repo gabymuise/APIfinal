@@ -24,7 +24,7 @@ public class ClienteService {
 
     // Método para crear un nuevo cliente
     public ClienteResponse crearCliente(ClienteRequest clienteRequest) {
-        Cliente cliente = clienteMapper.toCliente(clienteRequest);
+        Cliente cliente = clienteMapper.toClienteModel(clienteRequest);
         cliente = clienteRepository.save(cliente);
         return clienteMapper.toClienteResponse(cliente);
     }

@@ -8,16 +8,17 @@ import org.springframework.stereotype.Component;
 @Component
 public class CategoriaMapper {
 
-    public Categoria mapToCategoriaModel(CategoriaRequest categoriaRequest) {
+    public Categoria toCategoriaModel(CategoriaRequest categoriaRequest) {
         Categoria categoria = new Categoria();
         categoria.setNombre(categoriaRequest.getNombre());
         return categoria;
     }
 
-    public CategoriaResponse mapToCategoriaResponse(Categoria categoria) {
+    public CategoriaResponse toCategoriaResponse(Categoria categoria) {
         CategoriaResponse categoriaResponse = new CategoriaResponse();
         categoriaResponse.setId(categoria.getId());
         categoriaResponse.setNombre(categoria.getNombre());
         return categoriaResponse;
     }
 }
+

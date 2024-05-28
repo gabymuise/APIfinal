@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class EmpleadoMapper {
-    public Empleado mapToEmpleadoModel(EmpleadoRequest empleadoRequest) {
+    public Empleado toEmpleadoModel(EmpleadoRequest empleadoRequest) {
         Empleado empleado = new Empleado();
         empleado.setNombre(empleadoRequest.getNombre());
         empleado.setCargo(empleadoRequest.getCargo());
@@ -17,7 +17,7 @@ public class EmpleadoMapper {
         return empleado;
     }
 
-    public EmpleadoResponse mapToEmpleadoResponse(Empleado empleado) {
+    public EmpleadoResponse toEmpleadoResponse(Empleado empleado) {
         EmpleadoResponse empleadoResponse = new EmpleadoResponse();
         empleadoResponse.setId(empleado.getId());
         empleadoResponse.setNombre(empleado.getNombre());
@@ -35,5 +35,3 @@ public class EmpleadoMapper {
         empleado.setPlato(empleadoRequest.getPlato());
     }
 }
-
-
