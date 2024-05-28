@@ -20,8 +20,4 @@ public class CategoriaMapper {
         categoriaResponse.setNombre(categoria.getNombre());
         return categoriaResponse;
     }
-
-    public void updateCategoriaFromRequest(CategoriaRequest categoriaRequest, Categoria categoria) {
-        categoria.setNombre(categoriaRequest.getNombre());
-    }
 }

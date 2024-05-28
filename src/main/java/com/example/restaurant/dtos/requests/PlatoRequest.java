@@ -10,5 +10,4 @@ public class PlatoRequest {
     private String descripcion;
     private Double precio;
     private Long categoriaId;
-
 }

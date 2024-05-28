@@ -11,6 +11,5 @@ public class PlatoResponse {
     private String descripcion;
     private Double precio;
     private Long categoriaId;
-
+    private String categoriaNombre;
 }
-

@@ -1,14 +1,14 @@
 package com.example.restaurant.models;
 
 import jakarta.persistence.*;
-import org.springframework.stereotype.Component;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.stereotype.Component;
 
 @Entity
+@Table(name = "platos")
 @Getter
 @Setter
-@Table(name = "plato")
 @Component
 public class Plato {
 
@@ -16,23 +16,18 @@ public class Plato {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(name = "nombre")
     private String nombre;
+
+    @Column(name = "descripcion")
     private String descripcion;
+
+    @Column(name = "precio")
     private Double precio;
 
     @ManyToOne
-    @JoinColumn(name = "categoria_id")
+    @JoinTable(name = "Plato_Categoria",
+            joinColumns = @JoinColumn(name = "id_Plato"),
+            inverseJoinColumns = @JoinColumn(name = "id_Categoria"))
     private Categoria categoria;
-
-    // Getters and Setters
-    // ...
-    public Categoria getCategoria() {
-        return categoria;
-    }
-
-    public void setCategoria(Categoria categoria) {
-        this.categoria = categoria;
-    }
-
 }
-

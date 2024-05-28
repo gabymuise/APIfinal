@@ -2,13 +2,13 @@ package com.example.restaurant.mappers;
 
 import com.example.restaurant.dtos.requests.PlatoRequest;
 import com.example.restaurant.dtos.responses.PlatoResponse;
-import com.example.restaurant.models.Categoria;
+import com.example.restaurant.exceptions.ResourceNotFoundException;
 import com.example.restaurant.models.Plato;
 import com.example.restaurant.repositories.CategoriaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
-@Service
+@Component
 public class PlatoMapper {
 
     @Autowired
@@ -19,11 +19,8 @@ public class PlatoMapper {
         plato.setNombre(platoRequest.getNombre());
         plato.setDescripcion(platoRequest.getDescripcion());
         plato.setPrecio(platoRequest.getPrecio());
-
-        Categoria categoria = categoriaRepository.findById(platoRequest.getCategoriaId())
-                .orElseThrow(() -> new IllegalArgumentException("Categoría no encontrada"));
-        plato.setCategoria(categoria);
-
+        plato.setCategoria(categoriaRepository.findById(platoRequest.getCategoriaId())
+                .orElseThrow(() -> new ResourceNotFoundException("Categoría no encontrada con id: " + platoRequest.getCategoriaId())));
         return plato;
     }
 
@@ -36,15 +33,4 @@ public class PlatoMapper {
         platoResponse.setCategoriaId(plato.getCategoria().getId());
         return platoResponse;
     }
-
-    public void updatePlatoFromRequest(PlatoRequest platoRequest, Plato plato) {
-        plato.setNombre(platoRequest.getNombre());
-        plato.setDescripcion(platoRequest.getDescripcion());
-        plato.setPrecio(platoRequest.getPrecio());
-
-        Categoria categoria = categoriaRepository.findById(platoRequest.getCategoriaId())
-                .orElseThrow(() -> new IllegalArgumentException("Categoría no encontrada"));
-        plato.setCategoria(categoria);
-    }
 }
-

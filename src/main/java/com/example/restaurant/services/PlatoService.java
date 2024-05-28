@@ -2,11 +2,12 @@ package com.example.restaurant.services;
 
 import com.example.restaurant.dtos.requests.PlatoRequest;
 import com.example.restaurant.dtos.responses.PlatoResponse;
+import com.example.restaurant.exceptions.ResourceNotFoundException;
 import com.example.restaurant.mappers.PlatoMapper;
 import com.example.restaurant.models.Plato;
+import com.example.restaurant.repositories.CategoriaRepository;
 import com.example.restaurant.repositories.PlatoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -18,18 +19,20 @@ public class PlatoService {
 
     private final PlatoRepository platoRepository;
     private final PlatoMapper platoMapper;
+    private final CategoriaRepository categoriaRepository;
 
     @Autowired
-    public PlatoService(PlatoRepository platoRepository, PlatoMapper platoMapper) {
+    public PlatoService(PlatoRepository platoRepository, PlatoMapper platoMapper, CategoriaRepository categoriaRepository) {
         this.platoRepository = platoRepository;
         this.platoMapper = platoMapper;
+        this.categoriaRepository = categoriaRepository;
     }
 
     @Transactional
     public PlatoResponse crearPlato(PlatoRequest platoRequest) {
         Plato plato = platoMapper.mapToPlatoModel(platoRequest);
-        Plato platoGuardado = platoRepository.save(plato);
-        return platoMapper.mapToPlatoResponse(platoGuardado);
+        Plato nuevoPlato = platoRepository.save(plato);
+        return platoMapper.mapToPlatoResponse(nuevoPlato);
     }
 
     @Transactional(readOnly = true)
@@ -59,9 +62,12 @@ public class PlatoService {
     public PlatoResponse actualizarPlato(Long id, PlatoRequest platoRequest) {
         Plato plato = platoRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Plato no encontrado con id: " + id));
-        platoMapper.updatePlatoFromRequest(platoRequest, plato);
+        plato.setNombre(platoRequest.getNombre());
+        plato.setDescripcion(platoRequest.getDescripcion());
+        plato.setPrecio(platoRequest.getPrecio());
+        plato.setCategoria(categoriaRepository.findById(platoRequest.getCategoriaId())
+                .orElseThrow(() -> new ResourceNotFoundException("Categoría no encontrada con id: " + platoRequest.getCategoriaId())));
         Plato platoActualizado = platoRepository.save(plato);
         return platoMapper.mapToPlatoResponse(platoActualizado);
     }
 }
-
