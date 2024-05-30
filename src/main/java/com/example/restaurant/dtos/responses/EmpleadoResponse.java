@@ -1,7 +1,7 @@
 package com.example.restaurant.dtos.responses;
 
 import com.example.restaurant.models.Cliente;
-import com.example.restaurant.models.Plato;
+import java.util.Set;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -12,6 +12,6 @@ public class EmpleadoResponse {
     private String nombre;
     private String cargo;
     private Cliente cliente;
-    private Plato plato;
+    private Set<Long> platoIds;
 }
 

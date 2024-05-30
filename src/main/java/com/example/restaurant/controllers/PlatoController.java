@@ -27,6 +27,7 @@ public class PlatoController {
         return ResponseEntity.status(HttpStatus.CREATED).body(nuevoPlato);
     }
 
+
     @GetMapping("/listar")
     public ResponseEntity<List<PlatoResponse>> listarPlatos() {
         List<PlatoResponse> platos = platoService.listarPlatos();
@@ -51,4 +52,3 @@ public class PlatoController {
         return ResponseEntity.ok("Plato eliminado");
     }
 }
-

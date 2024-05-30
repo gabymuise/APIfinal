@@ -6,28 +6,25 @@ import lombok.Setter;
 import org.springframework.stereotype.Component;
 
 @Entity
-@Table(name = "platos")
 @Getter
 @Setter
+@Table(name = "plato")
 @Component
 public class Plato {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "nombre")
+    @Column(nullable = false)
     private String nombre;
 
-    @Column(name = "descripcion")
+    @Column(nullable = false)
     private String descripcion;
 
-    @Column(name = "precio")
+    @Column(nullable = false)
     private Double precio;
 
     @ManyToOne
-    @JoinTable(name = "Plato_Categoria",
-            joinColumns = @JoinColumn(name = "id_Plato"),
-            inverseJoinColumns = @JoinColumn(name = "id_Categoria"))
+    @JoinColumn(name = "categoria_id")
     private Categoria categoria;
 }

@@ -21,4 +21,3 @@ public class CategoriaMapper {
         return categoriaResponse;
     }
 }
-

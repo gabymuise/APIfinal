@@ -5,7 +5,9 @@ import com.example.restaurant.dtos.requests.ClienteRequest;
 import com.example.restaurant.mappers.ClienteMapper;
 import com.example.restaurant.models.Cliente;
 import com.example.restaurant.repositories.ClienteRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -16,20 +18,20 @@ public class ClienteService {
 
     private final ClienteRepository clienteRepository;
     private final ClienteMapper clienteMapper;
-
+    @Autowired
     public ClienteService(ClienteRepository clienteRepository, ClienteMapper clienteMapper) {
         this.clienteRepository = clienteRepository;
         this.clienteMapper = clienteMapper;
     }
 
-    // Método para crear un nuevo cliente
+    @Transactional
     public ClienteResponse crearCliente(ClienteRequest clienteRequest) {
         Cliente cliente = clienteMapper.toClienteModel(clienteRequest);
         cliente = clienteRepository.save(cliente);
         return clienteMapper.toClienteResponse(cliente);
     }
 
-    // Método para obtener un cliente por ID
+    @Transactional
     public ClienteResponse obtenerClientePorId(Long clienteId) {
         Optional<Cliente> optionalCliente = clienteRepository.findById(clienteId);
         if (optionalCliente.isPresent()) {
@@ -40,7 +42,7 @@ public class ClienteService {
         }
     }
 
-    // Método para listar todos los clientes
+    @Transactional
     public List<ClienteResponse> listarClientes() {
         List<Cliente> clientes = clienteRepository.findAll();
         return clientes.stream()
@@ -48,7 +50,7 @@ public class ClienteService {
                 .collect(Collectors.toList());
     }
 
-    // Método para actualizar un cliente
+    @Transactional
     public ClienteResponse actualizarCliente(Long clienteId, ClienteRequest clienteRequest) {
         Cliente cliente = clienteRepository.findById(clienteId)
                 .orElseThrow(() -> new IllegalArgumentException("El cliente con el ID proporcionado no existe"));
@@ -57,7 +59,7 @@ public class ClienteService {
         return clienteMapper.toClienteResponse(cliente);
     }
 
-    // Método para eliminar un cliente por ID
+    @Transactional
     public void eliminarClientePorId(Long clienteId) {
         if (clienteRepository.existsById(clienteId)) {
             clienteRepository.deleteById(clienteId);

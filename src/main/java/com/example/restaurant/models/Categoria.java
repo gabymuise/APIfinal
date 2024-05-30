@@ -5,22 +5,22 @@ import lombok.Getter;
 import lombok.Setter;
 import org.springframework.stereotype.Component;
 
-import java.util.List;
+import java.util.Set;
 
 @Entity
-@Table(name = "categorias")
 @Getter
 @Setter
+@Table(name = "categorias")
 @Component
 public class Categoria {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "nombre")
+    @Column(nullable = false)
     private String nombre;
 
     @OneToMany(mappedBy = "categoria")
-    private List<Plato> platos;
+    private Set<Plato> platos;
+
 }

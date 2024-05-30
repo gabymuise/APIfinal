@@ -29,6 +29,7 @@ public class EmpleadoController {
         return ResponseEntity.status(HttpStatus.CREATED).body(nuevoEmpleado);
     }
 
+
     @GetMapping("/listar")
     public ResponseEntity<List<EmpleadoResponse>> listarEmpleados() {
         List<EmpleadoResponse> empleados = empleadoService.listarEmpleados();

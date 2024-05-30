@@ -3,6 +3,8 @@ package com.example.restaurant.dtos.responses;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.Set;
+
 @Getter
 @Setter
 public class PlatoResponse {
@@ -10,6 +12,6 @@ public class PlatoResponse {
     private String nombre;
     private String descripcion;
     private Double precio;
-    private Long categoriaId;
-    private String categoriaNombre;
+    private Set<Long> categoriaIds;
+    private Set<String> categoriaNombres;
 }

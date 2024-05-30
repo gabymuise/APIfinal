@@ -2,11 +2,12 @@ package com.example.restaurant.mappers;
 
 import com.example.restaurant.dtos.requests.PlatoRequest;
 import com.example.restaurant.dtos.responses.PlatoResponse;
-import com.example.restaurant.exceptions.ResourceNotFoundException;
 import com.example.restaurant.models.Plato;
 import com.example.restaurant.repositories.CategoriaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
+import java.util.Collections;
 
 @Component
 public class PlatoMapper {
@@ -19,8 +20,6 @@ public class PlatoMapper {
         plato.setNombre(platoRequest.getNombre());
         plato.setDescripcion(platoRequest.getDescripcion());
         plato.setPrecio(platoRequest.getPrecio());
-        plato.setCategoria(categoriaRepository.findById(platoRequest.getCategoriaId())
-                .orElseThrow(() -> new ResourceNotFoundException("Categoría no encontrada con id: " + platoRequest.getCategoriaId())));
         return plato;
     }
 
@@ -30,7 +29,12 @@ public class PlatoMapper {
         platoResponse.setNombre(plato.getNombre());
         platoResponse.setDescripcion(plato.getDescripcion());
         platoResponse.setPrecio(plato.getPrecio());
-        platoResponse.setCategoriaId(plato.getCategoria().getId());
+
+        if (plato.getCategoria() != null) {
+            platoResponse.setCategoriaIds(Collections.singleton(plato.getCategoria().getId()));
+            platoResponse.setCategoriaNombres(Collections.singleton(plato.getCategoria().getNombre()));
+        }
+
         return platoResponse;
     }
 }
